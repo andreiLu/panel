@@ -17,7 +17,7 @@ class DevicesController extends AbstractController
 {
 
     /**
-     * @Route("/devices", methods={"GET"})
+     * @Route("/devices", name="devices", methods={"GET"})
      */
     public function index()
     {

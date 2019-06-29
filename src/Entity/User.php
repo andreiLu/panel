@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -21,7 +20,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private $username;
 
     /**
      * @ORM\Column(type="json")
@@ -37,53 +36,16 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $username;
+    private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $first_name;
+    private $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $last_name;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updated_at;
-
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     * @return User
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     /**
@@ -93,7 +55,14 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -108,10 +77,6 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param array $roles
-     * @return User
-     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -124,13 +89,9 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return (string) $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return User
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -155,89 +116,26 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @param string $username
-     * @return User
-     */
-    public function setUsername(string $username): self
+    public function getEmail(): ?string
     {
-        $this->username = $username;
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFirstName(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->first_name;
+        return $this->firstname;
     }
 
-    /**
-     * @param string|null $first_name
-     * @return User
-     */
-    public function setFirstName(?string $first_name): self
+    public function setFirstname(?string $firstname): self
     {
-        $this->first_name = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastName(): ?string
-    {
-        return $this->last_name;
-    }
-
-    /**
-     * @param string $last_name
-     * @return User
-     */
-    public function setLastName(string $last_name): self
-    {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param \DateTimeInterface $created_at
-     * @return User
-     */
-    public function setCreatedAt(DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getUpdatedAt(): ?DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @param \DateTimeInterface $updated_at
-     * @return User
-     */
-    public function setUpdatedAt(DateTimeInterface $updated_at): self
-    {
-        $this->updated_at = $updated_at;
+        $this->firstname = $firstname;
 
         return $this;
     }

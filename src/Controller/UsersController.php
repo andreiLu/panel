@@ -23,7 +23,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/users", methods={"GET"})
+     * @Route("/users", name="users", methods={"GET"})
      */
     public function index()
     {
@@ -38,19 +38,6 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/users/new", methods={"GET", "POST"})
-     */
-    public function new(Request $request)
-    {
-        $form = $this->_getNewUserForm();
-
-        $form->handleRequest($request);
-        $this->_handleSubmit($form);
-
-        return $this->render('users/new.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
      * @param $form
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
@@ -62,8 +49,6 @@ class UsersController extends AbstractController
             $password = $this->encoder->encodePassword($user, $user->getPassword());
 
             $user->setPassword($password);
-            $user->setCreatedAt(new DateTime('now'));
-            $user->setUpdatedAt(new DateTime('now'));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -93,15 +78,15 @@ class UsersController extends AbstractController
                 ['attr' => ['class' => 'form-control']]
             )
             ->add(
-                'first_name',
+                'firstname',
                 TextType::class,
                 ['attr' => ['class' => 'form-control']]
             )
-            ->add(
-                'last_name',
-                TextType::class,
-                ['attr' => ['class' => 'form-control']]
-            )
+//            ->add(
+//                'last_name',
+//                TextType::class,
+//                ['attr' => ['class' => 'form-control']]
+//            )
             ->add(
                 'password',
                 PasswordType::class,
@@ -117,30 +102,17 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @Route("/users/new", methods={"POST"})
+     * @Route("/users/new", methods={"GET", "POST"})
      */
-//    public function create(Request $request)
-//    {
-//
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $user = new User();
-//        $user->setEmail($request->request->get('email'));
-//        $user->setUsername($request->request->get('username'));
-//        $user->setPassword($request->request->get('password'));
-//        $user->setFirstName($request->request->get('first_name'));
-//        $user->setLastName($request->request->get('last_Name'));
-//        $user->setPassword(1999);
-//
-//        $password = $this->encoder->encodePassword($user, $request->request->get('password'));
-//        $user->setPassword($password);
-//
-//        dd($user);
-//
-//        $entityManager->persist($user);
-//
-//
-//    }
+    public function new(Request $request)
+    {
+        $form = $this->_getNewUserForm();
+
+        $form->handleRequest($request);
+        $this->_handleSubmit($form);
+
+        return $this->render('users/new.html.twig', ['form' => $form->createView()]);
+    }
 
     /**
      * @Route("/users/{$user}/edit", methods={"PUT"})

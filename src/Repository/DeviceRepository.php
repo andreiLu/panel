@@ -32,6 +32,9 @@ class DeviceRepository extends ServiceEntityRepository
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function getAvailableDeviceNames()
     {
         return [
