@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,23 +38,16 @@ class UsersController extends AbstractController
 
     /**
      * @param $form
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Exception
      */
     private function _handleSubmit($form)
     {
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
-            $password = $this->encoder->encodePassword($user, $user->getPassword());
+        $user = $form->getData();
+        $password = $this->encoder->encodePassword($user, $user->getPassword());
+        $entityManager = $this->getDoctrine()->getManager();
 
-            $user->setPassword($password);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('users');
-        }
+        $user->setPassword($password);
+        $entityManager->persist($user);
+        $entityManager->flush();
     }
 
     /**
@@ -82,11 +74,6 @@ class UsersController extends AbstractController
                 TextType::class,
                 ['attr' => ['class' => 'form-control']]
             )
-//            ->add(
-//                'last_name',
-//                TextType::class,
-//                ['attr' => ['class' => 'form-control']]
-//            )
             ->add(
                 'password',
                 PasswordType::class,
@@ -109,7 +96,12 @@ class UsersController extends AbstractController
         $form = $this->_getNewUserForm();
 
         $form->handleRequest($request);
-        $this->_handleSubmit($form);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('users');
+        }
 
         return $this->render('users/new.html.twig', ['form' => $form->createView()]);
     }
