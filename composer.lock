@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52b42b14c3d099addb73736e1eef3c9b",
+    "content-hash": "cf3d54e9bc5a05254f7f6b575f77cdbc",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2977,16 +2977,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "0a79c3b9466c52cfefe42937fceed4c09e5953ae"
+                "reference": "1fdaa6aeac75bdb903a8fc69befd1f9e3d227895"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/0a79c3b9466c52cfefe42937fceed4c09e5953ae",
-                "reference": "0a79c3b9466c52cfefe42937fceed4c09e5953ae",
+                "url": "https://api.github.com/repos/symfony/form/zipball/1fdaa6aeac75bdb903a8fc69befd1f9e3d227895",
+                "reference": "1fdaa6aeac75bdb903a8fc69befd1f9e3d227895",
                 "shasum": ""
             },
             "require": {
@@ -3057,7 +3057,7 @@
             ],
             "description": "Symfony Form Component",
             "homepage": "https://symfony.com",
-            "time": "2019-06-06T13:00:51+00:00"
+            "time": "2019-06-26T06:50:02+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -4412,16 +4412,16 @@
         },
         {
             "name": "symfony/security-bundle",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-bundle.git",
-                "reference": "ce3826058a4b1b892bb3b60e6f5019b44b079ddd"
+                "reference": "fa545860b2f72fc3c9045d8700bfcca10a4518d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/ce3826058a4b1b892bb3b60e6f5019b44b079ddd",
-                "reference": "ce3826058a4b1b892bb3b60e6f5019b44b079ddd",
+                "url": "https://api.github.com/repos/symfony/security-bundle/zipball/fa545860b2f72fc3c9045d8700bfcca10a4518d4",
+                "reference": "fa545860b2f72fc3c9045d8700bfcca10a4518d4",
                 "shasum": ""
             },
             "require": {
@@ -4492,7 +4492,7 @@
             ],
             "description": "Symfony SecurityBundle",
             "homepage": "https://symfony.com",
-            "time": "2019-05-30T16:10:05+00:00"
+            "time": "2019-06-20T10:11:09+00:00"
         },
         {
             "name": "symfony/security-core",
@@ -5336,16 +5336,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "ea74d2843fd8a9f2d4800136c985d13da586a405"
+                "reference": "ba2cb2ba24344e56a32b5284be988bc1faeac209"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/ea74d2843fd8a9f2d4800136c985d13da586a405",
-                "reference": "ea74d2843fd8a9f2d4800136c985d13da586a405",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/ba2cb2ba24344e56a32b5284be988bc1faeac209",
+                "reference": "ba2cb2ba24344e56a32b5284be988bc1faeac209",
                 "shasum": ""
             },
             "require": {
@@ -5424,7 +5424,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-            "time": "2019-06-03T20:27:40+00:00"
+            "time": "2019-06-22T08:39:44+00:00"
         },
         {
             "name": "symfony/var-exporter",
