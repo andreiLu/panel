@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UsersController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    {% for device in devices %}
+        <div>{{ device.name|e }}</div>
+        <div>{{ device.type|e }}</div>
+    {% endfor %}
+</div>
+{% endblock %}
