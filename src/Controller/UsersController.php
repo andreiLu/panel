@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +23,14 @@ class UsersController extends AbstractController
     }
 
     /**
+     * @Route("/", name="hompage", methods={"GET"})
+     */
+    public function homepage()
+    {
+        return $this->redirectToRoute('users');
+    }
+
+    /**
      * @Route("/users", name="users", methods={"GET"})
      */
     public function index()
@@ -33,6 +42,82 @@ class UsersController extends AbstractController
 
         return $this->render('users/index.html.twig', [
             'users' => $users,
+        ]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/users/new", name="new_user", methods={"GET", "POST"})
+     */
+    public function new(Request $request)
+    {
+        $form = $this->_getNewUserForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('users');
+        }
+
+        return $this->render('users/new.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route( "users/{user}/update", name="update_user", methods={"GET", "PUT"} )
+     */
+    public function update(User $user, Request $request)
+    {
+
+        $form = $this->_getEditUserForm($user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('users');
+        }
+
+        return $this->render('users/update.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/users/{user}/delete", name="delete_user", methods={"GET", "DELETE"})
+     */
+    public function delete(User $user, Request $request)
+    {
+        $form = $this->_getDeleterForm($user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            /**
+             * @todo find a better way of doing this
+             *
+             * Remove all assigned devices
+             */
+            foreach ($user->getDevice()->getValues() as $device) {
+                $device->setOwner(null);
+
+                $entityManager->persist($device);
+                $entityManager->flush();
+            }
+
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('users');
+        }
+
+        return $this->render('users/delete.html.twig', [
+            'users' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -124,48 +209,21 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/users/new", name="new_user", methods={"GET", "POST"})
+     * Get delete user form
+     *
+     * @param User $user
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function new(Request $request)
+    private function _getDeleterForm(User $user)
     {
-        $form = $this->_getNewUserForm();
+        $form = $this->createFormBuilder($user)
+            ->setMethod('DELETE')
+            ->add(
+                'save',
+                SubmitType::class,
+                ['label' => 'Delete user'])
+            ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->_handleSubmit($form);
-
-            return $this->redirectToRoute('users');
-        }
-
-        return $this->render('users/new.html.twig', ['form' => $form->createView()]);
+        return $form;
     }
-
-    /**
-     * @Route( "users/update/{user}", name="update_user", methods={"GET", "PUT"} )
-     */
-    public function update(User $user, Request $request)
-    {
-
-        $form = $this->_getEditUserForm($user);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->_handleSubmit($form);
-
-            return $this->redirectToRoute('users');
-        }
-
-        return $this->render('users/update.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
-     * @Route("/users/{$user}/delete", methods={"PUT"})
-     */
-    public function delete($user)
-    {
-
-    }
-
 }

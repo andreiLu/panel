@@ -6,7 +6,15 @@
 
     <div class="container">
         <div class="row">
-            <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
+            <div class="col-4">
+                <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('new_device') }}" class="btn btn-primary">Add device</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('devices') }}" class="btn btn-primary">View all devices</a>
+            </div>
         </div>
 
         {% for user in users %}
@@ -18,6 +26,12 @@
                     <a href="{{ path('update_user', {user: user.id}) }}" type="button" class="btn btn-primary">
                         Edit user
                     </a>
+
+                    {% if app.user.id != user.id %}
+                        <a href="{{ path('delete_user', {user: user.id}) }}" type="button" class="btn btn-danger">
+                            Delete user
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

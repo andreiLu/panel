@@ -7,7 +7,17 @@
     <div class="container">
 
         <div class="row">
-            <a href="{{ path('new_device') }}" class="btn btn-primary">Add new device</a>
+
+            <div class="col-4">
+                <a href="{{ path('new_device') }}" class="btn btn-primary">Add new device</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('users') }}" class="btn btn-primary">View all users</a>
+            </div>
+
         </div>
 
         {% for device in devices %}
