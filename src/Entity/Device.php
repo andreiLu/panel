@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,16 @@ class Device
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="device")
      */
     private $owner;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Program", mappedBy="device")
+     */
+    private $program;
+
+    public function __construct()
+    {
+        $this->program = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -111,5 +123,41 @@ class Device
         $this->owner = $owner;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Program[]
+     */
+    public function getProgram(): Collection
+    {
+        return $this->program;
+    }
+
+    public function addProgram(Program $program): self
+    {
+        if (!$this->program->contains($program)) {
+            $this->program[] = $program;
+            $program->setDevice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgram(Program $program): self
+    {
+        if ($this->program->contains($program)) {
+            $this->program->removeElement($program);
+            // set the owning side to null (unless already changed)
+            if ($program->getDevice() === $this) {
+                $program->setDevice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

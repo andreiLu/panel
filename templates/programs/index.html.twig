@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UsersController!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-4">
+                <a href="{{ path('new_program') }}" class="btn btn-primary">Add new program</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
+            </div>
+            <div class="col-4">
+                <a href="{{ path('users') }}" class="btn btn-primary">View all users</a>
+            </div>
+
+        </div>
+
+        {% for program in programs %}
+
+            <div class="row">
+                <div class="col-4"> {{ program.name|e }}</div>
+                <div class="col-4"> {{ program.description|e }}</div>
+                <div class="col-4">
+                    {% if program.device %}
+                        <a href="{{ path('remove_program', {program: program.id}) }}">Remove from user</a>
+                    {% else %}
+                        <a href="{{ path('assign_program', {program: program.id}) }}">Assign to a device</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

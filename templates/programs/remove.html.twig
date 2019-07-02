@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new user{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+            Current program: {{ program.name }}
+        </div>
+
+        <div class="row">
+            Installed on: {{ program.device.name }}
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
