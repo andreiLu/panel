@@ -27,6 +27,7 @@
                 <div class="col-4"> {{ device.type|e }}</div>
                 <div class="col-4">
                     {% if device.owner %}
+                        <span>Belongs to: {{ device.owner.username }}</span>
                         <a href="{{ path('remove_device', {device: device.id}) }}">Remove from user</a>
                     {% else %}
                         <a href="{{ path('assign_device', {device: device.id}) }}">Assign to a user</a>

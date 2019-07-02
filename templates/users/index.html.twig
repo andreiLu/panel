@@ -5,12 +5,21 @@
 {% block body %}
 
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-top: 20px">
             <div class="col-3">
                 <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
             </div>
             <div class="col-3">
                 <a href="{{ path('new_device') }}" class="btn btn-primary">Add device</a>
+            </div>
+            <div class="col-3">
+                <a href="{{ path('new_program') }}" class="btn btn-primary">Add Program</a>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px">
+            <div class="col-3">
+                <a href="{{ path('users') }}" class="btn btn-primary">View all users</a>
             </div>
             <div class="col-3">
                 <a href="{{ path('devices') }}" class="btn btn-primary">View all devices</a>
@@ -20,10 +29,12 @@
             </div>
         </div>
 
+        <div style="margin-top: 50px"></div>
+
         {% for user in users %}
 
             <div class="row">
-                <div class="col-4">{{ user.firstname|e }}</div>
+                <div class="col-4">{{ user.username|e }}</div>
                 <div class="col-4">{{ user.email|e }}</div>
                 <div class="col-4">
                     <a href="{{ path('update_user', {user: user.id}) }}" type="button" class="btn btn-primary">
