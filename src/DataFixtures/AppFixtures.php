@@ -25,6 +25,7 @@ class AppFixtures extends Fixture
         $user->setEmail('admin@sent.com');
         $user->setFirstname('Admin');
         $user->setUsername('super_admin');
+        $user->setRoles(['ROLE_ADMIN']);
 
         $password = $this->encoder->encodePassword($user, 'pass_1234');
         $user->setPassword($password);

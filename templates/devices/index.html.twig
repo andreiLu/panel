@@ -4,10 +4,26 @@
 
 {% block body %}
 
-<div class="example-wrapper">
-    {% for device in devices %}
-        <div>{{ device.name|e }}</div>
-        <div>{{ device.type|e }}</div>
-    {% endfor %}
-</div>
+    <div class="container">
+
+        <div class="row">
+            <a href="{{ path('new_device') }}" class="btn btn-primary">Add new device</a>
+        </div>
+
+        {% for device in devices %}
+
+            <div class="row">
+                <div class="col-4"> {{ device.name|e }}</div>
+                <div class="col-4"> {{ device.type|e }}</div>
+                <div class="col-4">
+                    {% if device.owner %}
+                        <a href="{{ path('remove_device', {device: device.id}) }}">Remove from user</a>
+                    {% else %}
+                        <a href="{{ path('assign_device', {device: device.id}) }}">Assign to a user</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
 {% endblock %}

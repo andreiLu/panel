@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new user{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+            Cureent device: {{ device.name }}
+        </div>
+
+        <div class="row">
+            Belongs to: {{ device.owner.username }}
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

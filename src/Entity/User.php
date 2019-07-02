@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -42,6 +44,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstname;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Device", mappedBy="owner")
+     */
+    private $device;
+
+    public function __construct()
+    {
+        $this->device = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,5 +150,41 @@ class User implements UserInterface
         $this->firstname = $firstname;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Device[]
+     */
+    public function getDevice(): Collection
+    {
+        return $this->device;
+    }
+
+    public function addDevice(Device $device): self
+    {
+        if (!$this->device->contains($device)) {
+            $this->device[] = $device;
+            $device->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevice(Device $device): self
+    {
+        if ($this->device->contains($device)) {
+            $this->device->removeElement($device);
+            // set the owning side to null (unless already changed)
+            if ($device->getOwner() === $this) {
+                $device->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 }

@@ -4,9 +4,23 @@
 
 {% block body %}
 
-<div class="example-wrapper">
-    {% for user in users %}
-        <div>{{ user.firstname|e }}</div>
-    {% endfor %}
-</div>
+    <div class="container">
+        <div class="row">
+            <a href="{{ path('new_user') }}" class="btn btn-primary">Add new user</a>
+        </div>
+
+        {% for user in users %}
+
+            <div class="row">
+                <div class="col-4">{{ user.firstname|e }}</div>
+                <div class="col-4">{{ user.email|e }}</div>
+                <div class="col-4">
+                    <a href="{{ path('update_user', {user: user.id}) }}" type="button" class="btn btn-primary">
+                        Edit user
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}

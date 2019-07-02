@@ -89,7 +89,42 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/users/new", methods={"GET", "POST"})
+     * Get edit user form
+     *
+     * @param User $user
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function _getEditUserForm(User $user)
+    {
+
+        $form = $this->createFormBuilder($user)
+            ->setMethod('PUT')
+            ->add(
+                'email',
+                EmailType::class,
+                ['attr' => ['class' => 'form-control'],]
+            )
+            ->add(
+                'username',
+                TextType::class,
+                ['attr' => ['class' => 'form-control']]
+            )
+            ->add(
+                'firstname',
+                TextType::class,
+                ['attr' => ['class' => 'form-control']]
+            )
+            ->add(
+                'save',
+                SubmitType::class,
+                ['label' => 'Add User'])
+            ->getForm();
+
+        return $form;
+    }
+
+    /**
+     * @Route("/users/new", name="new_user", methods={"GET", "POST"})
      */
     public function new(Request $request)
     {
@@ -107,11 +142,22 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/users/{$user}/edit", methods={"PUT"})
+     * @Route( "users/update/{user}", name="update_user", methods={"GET", "PUT"} )
      */
-    public function update($user)
+    public function update(User $user, Request $request)
     {
 
+        $form = $this->_getEditUserForm($user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('users');
+        }
+
+        return $this->render('users/update.html.twig', ['form' => $form->createView()]);
     }
 
     /**

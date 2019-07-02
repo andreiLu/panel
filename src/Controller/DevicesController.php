@@ -5,7 +5,10 @@ namespace App\Controller;
 
 
 use App\Entity\Device;
+use App\Entity\User;
 use App\Repository\DeviceRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +21,7 @@ class DevicesController extends AbstractController
 
     /**
      * @Route("/devices", name="devices", methods={"GET"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function index()
     {
@@ -31,7 +35,8 @@ class DevicesController extends AbstractController
     }
 
     /**
-     * @Route("/devices/new", methods={"GET", "POST"})
+     * @Route("/devices/new", name="new_device", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request)
     {
@@ -39,16 +44,55 @@ class DevicesController extends AbstractController
         $form = $this->_getNewDeviceForm();
 
         $form->handleRequest($request);
-        $this->_handleSubmit($form);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('devices');
+        }
+
 
         return $this->render('devices/new.html.twig', ['form' => $form->createView()]);
     }
 
-    private function _handleSubmit($form)
+    /**
+     * @Route("/devices/{device}/assign", name="assign_device", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function assign(Device $device, Request $request)
     {
+
+        $form = $this->_getAssignForm($device);
+
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $device = $form->getData();
+            $this->_handleSubmit($form);
+
+            return $this->redirectToRoute('devices');
+        }
+
+        return $this->render('devices/assign.html.twig', [
+            'form' => $form->createView(),
+            'device' => $device
+        ]);
+    }
+
+    /**
+     * @Route("/devices/{device}/remove", name="remove_device", methods={"GET", "PUT"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function remove(Device $device, Request $request)
+    {
+
+        $form = $this->_getRemoveForm($device);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $device->setOwner(null);
+
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($device);
@@ -56,6 +100,25 @@ class DevicesController extends AbstractController
 
             return $this->redirectToRoute('devices');
         }
+
+        return $this->render('devices/remove.html.twig', [
+            'device' => $device,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Handle form submit
+     *
+     * @param $form
+     */
+    private function _handleSubmit($form)
+    {
+        $device = $form->getData();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($device);
+        $entityManager->flush();
     }
 
     /**
@@ -91,6 +154,47 @@ class DevicesController extends AbstractController
                 'save',
                 SubmitType::class,
                 ['label' => 'Add Device'])
+            ->getForm();
+
+        return $form;
+    }
+
+    /**
+     * Get assign device form
+     *
+     * @param Device $device
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function _getAssignForm(Device $device)
+    {
+
+        $form = $this->createFormBuilder($device)
+            ->add('owner', EntityType::class, [
+                'class' => User::class
+            ])
+            ->add(
+                'save',
+                SubmitType::class,
+                ['label' => 'Assign Device'])
+            ->getForm();
+
+        return $form;
+    }
+
+    /**
+     * Get remove device form
+     *
+     * @param Device $device
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function _getRemoveForm(Device $device)
+    {
+        $form = $this->createFormBuilder($device)
+            ->setMethod('PUT')
+            ->add(
+                'save',
+                SubmitType::class,
+                ['label' => 'Remove Device'])
             ->getForm();
 
         return $form;

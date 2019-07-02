@@ -32,6 +32,11 @@ class Device
     private $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="device")
+     */
+    private $owner;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -92,6 +97,18 @@ class Device
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
